@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
+import 'package:savio/business_logic/blocs/category/category_cubit.dart';
+import 'package:savio/business_logic/blocs/transaction/transaction_bloc.dart';
 import 'package:savio/business_logic/blocs/user/user_bloc.dart';
 import 'package:savio/presentation/screens/home_screen.dart';
 import 'package:savio/presentation/screens/login_screen.dart';
@@ -21,8 +23,23 @@ class Wrapper extends StatelessWidget {
           UserBloc userBloc =
               UserBloc(authToken: snapshot.data!.token!, dio: Dio());
           userBloc.add(GetInitialUserData());
-          return BlocProvider.value(
-            value: userBloc,
+          TransactionBloc transactionBloc =
+              TransactionBloc(authToken: snapshot.data!.token!, dio: Dio());
+          transactionBloc.add(FetchAllTransactionsEvent());
+          CategoryCubit categoryCubit = CategoryCubit(dio: Dio());
+          categoryCubit.loadCategories();
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: userBloc,
+              ),
+              BlocProvider.value(
+                value: transactionBloc,
+              ),
+              BlocProvider.value(
+                value: categoryCubit,
+              ),
+            ],
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
                 if (state is InitialUserState) {

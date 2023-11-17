@@ -10,6 +10,9 @@ sealed class AuthState extends Equatable{
 
   const AuthState({required this.authStatus, this.token, this.error});
 
+  // getter for authtoken 
+  String? get authToken => token;
+
   @override
   List<Object?> get props => [authStatus, token, error];
 }

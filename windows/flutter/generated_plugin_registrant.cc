@@ -8,10 +8,13 @@
 
 #include <dynamic_color/dynamic_color_plugin_c_api.h>
 #include <file_selector_windows/file_selector_windows.h>
+#include <modal_progress_hud_nsn/modal_progress_hud_nsn_plugin_c_api.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   DynamicColorPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DynamicColorPluginCApi"));
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
+  ModalProgressHudNsnPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ModalProgressHudNsnPluginCApi"));
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:savio/presentation/tabs/home_tab.dart';
 import 'package:savio/presentation/tabs/user_profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -86,11 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: IndexedStack(
           index: selectedIndex,
           children: [
+            const HomeTab(),
+            // Container(),
             Container(),
             Container(),
             Container(),
-            Container(),
-            // HomeTab(),
             // const CommunityTab(),
             // const InDepthVisualization(),
             // const WishlistTab(),
