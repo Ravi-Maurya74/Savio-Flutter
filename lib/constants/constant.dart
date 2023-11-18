@@ -18,3 +18,11 @@ class TransactionApiConstants {
     return "$baseUrl$id/";
   }
 }
+
+class CommunityPostApiConstants {
+  static const String baseUrl = "${ApiConstants.baseUrl}community_post/";
+  static const String listCreate = baseUrl;
+  static String retrieveUpdateDestroy(int id) {
+    return "$baseUrl$id/";
+  }
+}

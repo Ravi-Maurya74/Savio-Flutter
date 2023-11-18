@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/tabs/home_tab.dart';
 import 'package:savio/presentation/tabs/user_profile_tab.dart';
 
@@ -88,11 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
           index: selectedIndex,
           children: [
             const HomeTab(),
+            const CommunityTab(),
             // Container(),
             Container(),
             Container(),
-            Container(),
-            // const CommunityTab(),
             // const InDepthVisualization(),
             // const WishlistTab(),
             const UserProfileTab(),
