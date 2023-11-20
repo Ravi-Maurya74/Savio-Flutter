@@ -72,7 +72,7 @@ class CommunityPostList {
       id: map['id'].toInt() as int,
       author: User.fromMap(map['author'] as Map<String, dynamic>),
       score: map['score'].toInt() as int,
-      vote: map['vote'].toInt() as int,
+      vote: map['vote'] != null ? map['vote'].toInt() : null,
       detail_url: map['detail_url'] as String,
       title: map['title'] as String,
       content: map['content'] as String,

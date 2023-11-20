@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseUrl =
-      "https://e512-2409-40e3-103a-8f1f-e0ef-258-4012-c5e.ngrok-free.app/";
+      "https://727b-2409-40e3-1038-5df4-513b-8b0c-d254-978f.ngrok-free.app/";
 }
 
 class UserApiConstants {
@@ -25,4 +25,14 @@ class CommunityPostApiConstants {
   static String retrieveUpdateDestroy(int id) {
     return "$baseUrl$id/";
   }
+
+  static String bookmark(int id) {
+    return "$baseUrl$id/bookmark/";
+  }
+
+  static String vote(int id) {
+    return "$baseUrl$id/vote/";
+  }
+
+  static const String comments = "${baseUrl}comments/";
 }

@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:savio/data/models/user.dart';
 
-class SingleCommunityPost {
+class SingleCommunityPost extends Equatable {
   final int id;
   final User author;
   final int upvotes;
@@ -15,7 +16,7 @@ class SingleCommunityPost {
   final String created_at;
   final String updated_at;
   final String? image;
-  SingleCommunityPost({
+  const SingleCommunityPost({
     required this.id,
     required this.author,
     required this.upvotes,
@@ -51,7 +52,7 @@ class SingleCommunityPost {
       downvotes: downvotes ?? this.downvotes,
       score: score ?? this.score,
       is_bookmarked: is_bookmarked ?? this.is_bookmarked,
-      vote: vote ?? this.vote,
+      vote: vote==-5?null: vote ?? this.vote,
       title: title ?? this.title,
       content: content ?? this.content,
       created_at: created_at ?? this.created_at,
@@ -80,12 +81,12 @@ class SingleCommunityPost {
   factory SingleCommunityPost.fromMap(Map<String, dynamic> map) {
     return SingleCommunityPost(
       id: map['id'].toInt() as int,
-      author: User.fromMap(map['author'] as Map<String,dynamic>),
+      author: User.fromMap(map['author'] as Map<String, dynamic>),
       upvotes: map['upvotes'].toInt() as int,
       downvotes: map['downvotes'].toInt() as int,
       score: map['score'].toInt() as int,
       is_bookmarked: map['is_bookmarked'] as bool,
-      vote: map['vote'].toInt() as int,
+      vote: map['vote'] != null ? map['vote'].toInt() : null,
       title: map['title'] as String,
       content: map['content'] as String,
       created_at: map['created_at'] as String,
@@ -96,7 +97,8 @@ class SingleCommunityPost {
 
   String toJson() => json.encode(toMap());
 
-  factory SingleCommunityPost.fromJson(String source) => SingleCommunityPost.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory SingleCommunityPost.fromJson(String source) =>
+      SingleCommunityPost.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -106,35 +108,51 @@ class SingleCommunityPost {
   @override
   bool operator ==(covariant SingleCommunityPost other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.author == author &&
-      other.upvotes == upvotes &&
-      other.downvotes == downvotes &&
-      other.score == score &&
-      other.is_bookmarked == is_bookmarked &&
-      other.vote == vote &&
-      other.title == title &&
-      other.content == content &&
-      other.created_at == created_at &&
-      other.updated_at == updated_at &&
-      other.image == image;
+
+    return other.id == id &&
+        other.author == author &&
+        other.upvotes == upvotes &&
+        other.downvotes == downvotes &&
+        other.score == score &&
+        other.is_bookmarked == is_bookmarked &&
+        other.vote == vote &&
+        other.title == title &&
+        other.content == content &&
+        other.created_at == created_at &&
+        other.updated_at == updated_at &&
+        other.image == image;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      author.hashCode ^
-      upvotes.hashCode ^
-      downvotes.hashCode ^
-      score.hashCode ^
-      is_bookmarked.hashCode ^
-      vote.hashCode ^
-      title.hashCode ^
-      content.hashCode ^
-      created_at.hashCode ^
-      updated_at.hashCode ^
-      image.hashCode;
+        author.hashCode ^
+        upvotes.hashCode ^
+        downvotes.hashCode ^
+        score.hashCode ^
+        is_bookmarked.hashCode ^
+        vote.hashCode ^
+        title.hashCode ^
+        content.hashCode ^
+        created_at.hashCode ^
+        updated_at.hashCode ^
+        image.hashCode;
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        id,
+        author,
+        upvotes,
+        downvotes,
+        score,
+        is_bookmarked,
+        vote,
+        title,
+        content,
+        created_at,
+        updated_at,
+        image
+      ];
 }
