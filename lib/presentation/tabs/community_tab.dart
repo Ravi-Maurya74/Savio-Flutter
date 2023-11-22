@@ -1,19 +1,21 @@
 import 'package:animations/animations.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
-import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/data/models/community_post_list.dart';
+import 'package:savio/presentation/screens/add_community_post_screen.dart';
 import 'package:savio/presentation/widgets/community_post_card.dart';
 
 class CommunityTab extends StatelessWidget {
-  const CommunityTab({super.key});
+  const CommunityTab(
+      {super.key, this.myPosts = false, this.savedPosts = false});
+  final bool savedPosts;
+  final bool myPosts;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: OpenContainer(
+      floatingActionButton: myPosts==false && savedPosts==false? OpenContainer(
         transitionDuration: const Duration(milliseconds: 500),
         transitionType: ContainerTransitionType.fadeThrough,
         closedShape: const CircleBorder(),
@@ -32,10 +34,31 @@ class CommunityTab extends StatelessWidget {
             color: Color.fromARGB(255, 216, 216, 216),
           ),
         ),
-        openBuilder: (context, action) => Container(),
+        openBuilder: (context, action) => const AddCommunityPostScreen(),
+      ):null,
+      appBar: AppBar(
+        title: Text(
+          myPosts
+              ? 'My Posts'
+              : savedPosts
+                  ? 'Saved Posts'
+                  : 'Community',
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 24),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<CommunityPostListBloc>().add(
+                    GetCommunityPostListEvent(),
+                  );
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: SafeArea(
-        child: BlocBuilder(
+        child: BlocBuilder<CommunityPostListBloc, CommunityPostListState>(
           builder: (context, state) {
             if (state is CommunityPostListLoaded) {
               return CommunityTabListWidget(
@@ -47,10 +70,10 @@ class CommunityTab extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
           },
-          bloc: CommunityPostListBloc(
-            authToken: context.read<AuthCubit>().state.authToken!,
-            dio: Dio(),
-          ),
+          // bloc: CommunityPostListBloc(
+          //   authToken: context.read<AuthCubit>().state.authToken!,
+          //   dio: Dio(),
+          // ),
         ),
       ),
     );

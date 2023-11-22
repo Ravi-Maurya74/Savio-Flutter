@@ -21,7 +21,13 @@ class TransactionApiConstants {
 
 class CommunityPostApiConstants {
   static const String baseUrl = "${ApiConstants.baseUrl}community_post/";
+
   static const String listCreate = baseUrl;
+
+  static const String bookmarked = "${baseUrl}user_bookmarks/";
+
+  static const String userPosts = "${baseUrl}user_posts/";
+
   static String retrieveUpdateDestroy(int id) {
     return "$baseUrl$id/";
   }
@@ -35,4 +41,10 @@ class CommunityPostApiConstants {
   }
 
   static const String comments = "${baseUrl}comments/";
+
+  static String commentVote(int id) {
+    return "$comments$id/vote/";
+  }
+
+  static const String commentCreate = "${comments}create/";
 }

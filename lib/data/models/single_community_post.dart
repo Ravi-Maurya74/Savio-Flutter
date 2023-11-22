@@ -91,7 +91,7 @@ class SingleCommunityPost extends Equatable {
       content: map['content'] as String,
       created_at: map['created_at'] as String,
       updated_at: map['updated_at'] as String,
-      image: map['image'] as String,
+      image: map['image']!=null?map['image'] as String:null,
     );
   }
 

@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/business_logic/blocs/user/user_bloc.dart';
 import 'package:savio/data/models/user.dart';
 import 'package:savio/presentation/screens/edit_profile_screen.dart';
+import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/widgets/profile_stack_design.dart';
 import 'package:savio/presentation/widgets/user_detail_tile.dart';
 
@@ -77,7 +80,18 @@ class _UserProfileTabState extends State<UserProfileTab> {
                 titleDescription: 'See all the saved posts from community',
                 trailingIcon: Icons.chevron_right_outlined,
                 title: 'Saved posts',
-                onPress: () {},
+                onPress: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return BlocProvider(
+                      create: (context) => CommunityPostListBloc(
+                        authToken: context.read<AuthCubit>().state.authToken!,
+                        dio: Dio(),
+                        savedPosts: true,
+                      ),
+                      child: const CommunityTab(savedPosts: true),
+                    );
+                  }));
+                },
               ),
               const Divider(
                 thickness: 0.5,
@@ -106,7 +120,18 @@ class _UserProfileTabState extends State<UserProfileTab> {
                 titleDescription: 'View all your posts',
                 trailingIcon: Icons.chevron_right_outlined,
                 title: 'My posts',
-                onPress: () {},
+                onPress: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return BlocProvider(
+                      create: (context) => CommunityPostListBloc(
+                        authToken: context.read<AuthCubit>().state.authToken!,
+                        dio: Dio(),
+                        myPosts: true,
+                      ),
+                      child: const CommunityTab(myPosts: true),
+                    );
+                  }));
+                },
               ),
               const Divider(
                 thickness: 0.5,

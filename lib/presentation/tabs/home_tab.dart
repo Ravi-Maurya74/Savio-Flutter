@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/business_logic/blocs/single_transaction/single_transaction_cubit.dart';
@@ -42,6 +43,20 @@ class HomeTab extends StatelessWidget {
           child: AddExpenseScreen(buildContext: context),
         ),
       ),
+      appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              SystemNavigator.pop();
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+          title: Text(
+            'Savio',
+            style:
+                Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 24),
+          ),
+          centerTitle: true,
+        ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
@@ -52,7 +67,7 @@ class HomeTab extends StatelessWidget {
               SizedBox(
                 width: size.width,
               ),
-              GraphCarousel(),
+              const GraphCarousel(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

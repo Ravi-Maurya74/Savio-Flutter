@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:savio/data/models/community_post_list.dart';
 import 'package:savio/presentation/screens/community_post_screen.dart';
+import 'package:savio/presentation/widgets/user_profile_pic.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CommunityPostCard extends StatelessWidget {
   const CommunityPostCard({super.key, required this.communityPostList});
@@ -35,8 +37,28 @@ class CommunityPostCard extends StatelessWidget {
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15)),
                   ),
-                  child: Image.network(communityPostList.image!,
-                      fit: BoxFit.fill)),
+                  child: CachedNetworkImage(
+          imageUrl: communityPostList.image!,
+          fit: BoxFit.fill,
+          placeholder: (context, url) {
+            return Shimmer.fromColors(
+              baseColor:
+                  Colors.grey[300]!, // Starting color of the shimmer effect
+              highlightColor:
+                  Colors.grey[100]!, // Ending color of the shimmer effect
+              child: Container(
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+            );
+          },
+        ),
+                      
+                      ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10),
@@ -65,37 +87,9 @@ class CommunityPostCard extends StatelessWidget {
                     visualDensity:
                         const VisualDensity(horizontal: -4, vertical: -4),
                     contentPadding: EdgeInsets.zero,
-                    leading: communityPostList.author.profilePic == null
-                        ? const Icon(
-                            Icons.account_circle,
-                            size: 35,
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return CachedNetworkImage(
-                                    imageUrl:
-                                        communityPostList.author.profilePic!,
-                                    placeholder: (context, url) => const Center(
-                                        child: SizedBox(
-                                            height: 30,
-                                            width: 30,
-                                            child:
-                                                CircularProgressIndicator())),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  );
-                                },
-                              );
-                            },
-                            child: CircleAvatar(
-                              radius: 20,
-                              backgroundImage: NetworkImage(
-                                  communityPostList.author.profilePic!),
-                            ),
-                          ),
+                    leading: UserProfilePic(
+                      url: communityPostList.author.profilePic,
+                    ),
                     title: Text(communityPostList.author.name,
                         style: Theme.of(context) //3
                             .textTheme

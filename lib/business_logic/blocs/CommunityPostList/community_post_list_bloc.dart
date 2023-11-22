@@ -11,19 +11,22 @@ part 'community_post_list_state.dart';
 
 class CommunityPostListBloc
     extends Bloc<CommunityPostListEvent, CommunityPostListState> {
-  CommunityPostListBloc({required this.authToken, required this.dio})
+  CommunityPostListBloc({required this.authToken, required this.dio,this.savedPosts=false,this.myPosts=false})
       : super(CommunityPostListInitial()) {
     on<GetCommunityPostListEvent>(_onGetCommunityPostListEvent);
     add(GetCommunityPostListEvent());
   }
   Dio dio;
   String authToken;
+  final bool savedPosts;
+  final bool myPosts;
 
   FutureOr<void> _onGetCommunityPostListEvent(GetCommunityPostListEvent event,
       Emitter<CommunityPostListState> emit) async {
     emit(CommunityPostListLoading());
     try {
       final response = await dio.get(
+        savedPosts?CommunityPostApiConstants.bookmarked:myPosts?CommunityPostApiConstants.userPosts:
         CommunityPostApiConstants.listCreate,
         options: Options(headers: {
           'Authorization': 'Token $authToken',

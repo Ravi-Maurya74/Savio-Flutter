@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
+import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/tabs/home_tab.dart';
 import 'package:savio/presentation/tabs/user_profile_tab.dart';
@@ -24,20 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              SystemNavigator.pop();
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          title: Text(
-            'Savio',
-            style:
-                Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 24),
-          ),
-          centerTitle: true,
-        ),
+        // appBar: AppBar(
+        //   leading: IconButton(
+        //     onPressed: () {
+        //       SystemNavigator.pop();
+        //     },
+        //     icon: const Icon(Icons.arrow_back),
+        //   ),
+        //   title: Text(
+        //     'Savio',
+        //     style:
+        //         Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 24),
+        //   ),
+        //   centerTitle: true,
+        // ),
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -89,7 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
           index: selectedIndex,
           children: [
             const HomeTab(),
-            const CommunityTab(),
+             BlocProvider(
+              create: (context) => CommunityPostListBloc(
+              authToken: context.read<AuthCubit>().state.authToken!,
+              dio: Dio(),
+            ),
+              child: const CommunityTab(),
+            ),
             // Container(),
             Container(),
             Container(),
