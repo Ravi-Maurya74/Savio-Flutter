@@ -15,7 +15,7 @@ class SingleCommunityPostBloc
     on<GetSingleCommunityPostEvent>(_onGetSingleCommunityPost);
     on<TestEvent>(
         (TestEvent event, Emitter<SingleCommunityPostState> emit) async {
-      print("BookMarked");
+      // print("BookMarked");
       emit(SingleCommunityPostLoaded(
           singleCommunityPost: (state as SingleCommunityPostLoaded)
               .singleCommunityPost

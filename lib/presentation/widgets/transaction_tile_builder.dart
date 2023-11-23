@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:savio/business_logic/blocs/transaction/transaction_bloc.dart';
 
 class TransactionTileBuilder extends StatelessWidget {
@@ -22,7 +23,8 @@ class TransactionTileBuilder extends StatelessWidget {
                 return ListTile(
                   title: Text(transaction.title),
                   subtitle: Text(transaction.category.name),
-                  trailing: Text(transaction.amount.toString()),
+                  leading: Text(transaction.amount.toString()),
+                  trailing: Text(DateFormat("d MMM y").format(DateTime.parse(transaction.date))),
                 );
               },
             );

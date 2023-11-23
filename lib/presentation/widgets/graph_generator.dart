@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/business_logic/blocs/graph/graph_bloc.dart';
 import 'package:savio/data/models/chart_data.dart';
@@ -53,11 +54,11 @@ class SingleGraphGenerator extends StatelessWidget {
           year: year),
       builder: (context, state) {
         if (state is GraphLoaded) {
-          return GraphWidget(chartData: state.chartData);
+          return GraphWidget(chartData: state.chartData,month: month,year: year,);
         } else if (state is GraphError) {
           return Center(child: Text(state.message));
         } else {
-          return const GraphWidget(chartData: []);
+          return GraphWidget(chartData: const [],month: month,year: year,);
         }
       },
     );
@@ -65,9 +66,11 @@ class SingleGraphGenerator extends StatelessWidget {
 }
 
 class GraphWidget extends StatelessWidget {
-  const GraphWidget({super.key, required this.chartData});
+  const GraphWidget({super.key, required this.chartData,required this.month,required this.year});
 
   final List<ChartData> chartData;
+  final int year;
+  final int month;
 
   @override
   Widget build(BuildContext context) {
@@ -100,27 +103,26 @@ class GraphWidget extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(0, 4, 2, 4),
         child: SfCartesianChart(
           primaryXAxis: DateTimeAxis(),
+          title: ChartTitle(
+            text: DateFormat("MMMM yyyy").format(DateTime(year, month)),
+            textStyle: Theme.of(context).textTheme.bodySmall,
+          ),
           // enableAxisAnimation: true,
-          // tooltipBehavior: TooltipBehavior(
-          //   builder: (data, point, series, pointIndex, seriesIndex) {
-          //     Provider.of<ScrollControllerProvider>(context, listen: false)
-          //         .scrollToWidget(
-          //             (data as _ChartData).date,
-          //             Provider.of<Student>(context, listen: false)
-          //                 .transactions);
-          //     return Padding(
-          //       padding: const EdgeInsets.all(5.0),
-          //       child: Text(
-          //         "${DateFormat("d MMM").format((data).date)}: ₹${data.expense.toString()}",
-          //         style: Theme.of(context)
-          //             .textTheme
-          //             .bodySmall!
-          //             .copyWith(color: Colors.black),
-          //       ),
-          //     );
-          //   },
-          //   enable: true,
-          // ),
+          tooltipBehavior: TooltipBehavior(
+            builder: (data, point, series, pointIndex, seriesIndex) {
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "${DateFormat("d MMM").format(DateTime.parse((data).date))}: ₹${data.total_amount.toString()}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(color: Colors.black),
+                ),
+              );
+            },
+            enable: true,
+          ),
           isTransposed: true,
           series: <ChartSeries>[
             BarSeries<ChartData, DateTime>(

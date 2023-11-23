@@ -17,6 +17,10 @@ class TransactionApiConstants {
   static String retrieveUpdateDestroy(int id) {
     return "$baseUrl$id/";
   }
+  static String categorySpending(int year, int month) {
+    return "${baseUrl}category/$year/$month/";
+  }
+  static const String prediction = "${baseUrl}prediction/";
 }
 
 class CommunityPostApiConstants {

@@ -30,7 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final user = User.fromMap(response.data);
       emit(LoadedUserState(user: user));
     } on DioException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       emit(ErrorUserState(error: e.response?.data['message']));
     }
   }
@@ -56,7 +56,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       User newUser = User.fromMap(response.data);
       emit(LoadedUserState(user: newUser));
     } on DioException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       emit(state.copyWith(
           status: UserStatus.error, error: e.response?.data['message']));
     }

@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/presentation/tabs/community_tab.dart';
+import 'package:savio/presentation/tabs/dues_tab.dart';
 import 'package:savio/presentation/tabs/home_tab.dart';
+import 'package:savio/presentation/tabs/insights_tab.dart';
 import 'package:savio/presentation/tabs/user_profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -92,18 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
           index: selectedIndex,
           children: [
             const HomeTab(),
-             BlocProvider(
+            BlocProvider(
               create: (context) => CommunityPostListBloc(
-              authToken: context.read<AuthCubit>().state.authToken!,
-              dio: Dio(),
-            ),
+                authToken: context.read<AuthCubit>().state.authToken!,
+                dio: Dio(),
+              ),
               child: const CommunityTab(),
             ),
-            // Container(),
-            Container(),
-            Container(),
-            // const InDepthVisualization(),
-            // const WishlistTab(),
+            const InsightTab(),
+            const Dues(),
             const UserProfileTab(),
           ],
         ),
