@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:savio/business_logic/blocs/transaction/transaction_bloc.dart';
+import 'package:savio/constants/decorations.dart';
 
 class TransactionTileBuilder extends StatelessWidget {
   const TransactionTileBuilder({super.key});
@@ -21,8 +23,8 @@ class TransactionTileBuilder extends StatelessWidget {
               itemBuilder: (context, index) {
                 final transaction = state.transactions[index];
                 return ListTile(
-                  title: Text(transaction.title),
-                  subtitle: Text(transaction.category.name),
+                  title: Text(transaction.title,style: bodyStyle,),
+                  subtitle: Text(transaction.category.name,style: bodyStyle.copyWith(fontSize: 14),),
                   leading: Text(transaction.amount.toString()),
                   trailing: Text(DateFormat("d MMM y").format(DateTime.parse(transaction.date))),
                 );

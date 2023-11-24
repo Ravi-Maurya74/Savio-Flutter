@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
+import 'package:savio/constants/decorations.dart';
 import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/tabs/dues_tab.dart';
 import 'package:savio/presentation/tabs/home_tab.dart';
@@ -60,22 +61,26 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 100,
               type: BottomNavigationBarType.fixed,
               currentIndex: selectedIndex,
+              selectedFontSize: 16,
+              unselectedFontSize: 14,
+              selectedLabelStyle: bodyStyle.copyWith(fontWeight: FontWeight.bold,fontSize: 13),
+              unselectedLabelStyle: bodyStyle.copyWith(fontSize: 11,fontWeight: FontWeight.normal),
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.message),
+                  icon: Icon(Icons.people_rounded),
                   label: 'Community',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.add_box_rounded),
-                  label: 'Add',
+                  icon: Icon(Icons.bar_chart_rounded),
+                  label: 'Insights',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite_rounded),
-                  label: 'Wishlist',
+                  icon: Icon(Icons.money_rounded),
+                  label: 'Dues',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_rounded),

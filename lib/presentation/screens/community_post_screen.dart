@@ -7,6 +7,7 @@ import 'package:savio/business_logic/blocs/comment_create/comment_create_bloc.da
 import 'package:savio/business_logic/blocs/single_comment/single_comment_bloc.dart';
 import 'package:savio/business_logic/blocs/comment_bloc/comment_bloc_bloc.dart';
 import 'package:savio/business_logic/blocs/single_community_post/single_community_post_bloc.dart';
+import 'package:savio/constants/decorations.dart';
 import 'package:savio/data/models/comment.dart';
 import 'package:savio/data/models/single_community_post.dart';
 import 'package:savio/presentation/widgets/user_profile_pic.dart';
@@ -25,9 +26,9 @@ class CommunityPostScreen extends StatelessWidget {
         postId: postId,
       ),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Blog'),
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Blog'),
+        // ),
         // floatingActionButton: OpenContainer(
         //   transitionDuration: const Duration(milliseconds: 500),
         //   transitionType: ContainerTransitionType.fadeThrough,
@@ -49,21 +50,23 @@ class CommunityPostScreen extends StatelessWidget {
         //   ),
         //   openBuilder: (context, action) => Container(),
         // ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const PostBuilder(),
-              Comments(
-                postId: postId,
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const PostBuilder(),
+                Comments(
+                  postId: postId,
+                ),
+                const SizedBox(
+                  height: 50,
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -229,10 +232,10 @@ class _CommentWidgetState extends State<CommentWidget> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.comment.author.name),
+                Text(widget.comment.author.name,style: bodyStyle,),
                 Text(
                   widget.comment.author.email,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: bodyStyle.copyWith(fontSize: Theme.of(context).textTheme.bodySmall!.fontSize),
                 ),
               ],
             ),
@@ -242,6 +245,8 @@ class _CommentWidgetState extends State<CommentWidget> {
                 Text(
                   widget.comment.content,
                   textAlign: TextAlign.justify,
+                  style: readingStyle.copyWith(
+                      fontSize: Theme.of(context).textTheme.bodySmall!.fontSize!+2),
                 ),
                 const SizedBox(
                   height: 8,
@@ -479,7 +484,7 @@ class Post extends StatelessWidget {
                 as SingleCommunityPostLoaded)
             .singleCommunityPost;
     var inputDate = DateTime.parse(singleCommunityPost.created_at);
-    var outputDate = DateFormat('dd/MM/yyyy').format(inputDate);
+    var outputDate = DateFormat('dd MMM, yyyy').format(inputDate);
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.only(top: 10, bottom: 0, left: 14, right: 14),
@@ -497,10 +502,7 @@ class Post extends StatelessWidget {
             ),
             title: Text(
               singleCommunityPost.author.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.bold),
+              style: bodyStyle,
             ),
             trailing: Text(outputDate,
                 style: Theme.of(context)
@@ -512,13 +514,7 @@ class Post extends StatelessWidget {
             thickness: 0.9,
           ),
           Text(singleCommunityPost.title,
-              style: Theme.of(context) // 1
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 23,
-                      color: Colors.white70)),
+              style: titleStyle),
           if (singleCommunityPost.image != null)
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -530,7 +526,7 @@ class Post extends StatelessWidget {
           Text(
             singleCommunityPost.content,
             style:
-                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 15),
+                readingStyle,
           ),
           const Activity()
         ],

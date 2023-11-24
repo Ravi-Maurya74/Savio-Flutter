@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
+import 'package:savio/constants/decorations.dart';
 import 'package:savio/data/models/community_post_list.dart';
 import 'package:savio/presentation/screens/add_community_post_screen.dart';
 import 'package:savio/presentation/widgets/community_post_card.dart';
@@ -43,7 +44,7 @@ class CommunityTab extends StatelessWidget {
               : savedPosts
                   ? 'Saved Posts'
                   : 'Community',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 24),
+          style: titleStyle,
         ),
         centerTitle: true,
         actions: [

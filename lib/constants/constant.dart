@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseUrl =
-      "https://727b-2409-40e3-1038-5df4-513b-8b0c-d254-978f.ngrok-free.app/";
+      "https://ccc3-2409-40e3-60-22c2-5928-9064-ef66-e7b9.ngrok-free.app/";
 }
 
 class UserApiConstants {
@@ -17,9 +17,11 @@ class TransactionApiConstants {
   static String retrieveUpdateDestroy(int id) {
     return "$baseUrl$id/";
   }
+
   static String categorySpending(int year, int month) {
     return "${baseUrl}category/$year/$month/";
   }
+
   static const String prediction = "${baseUrl}prediction/";
 }
 

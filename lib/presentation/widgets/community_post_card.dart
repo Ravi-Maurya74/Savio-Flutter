@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:savio/constants/decorations.dart';
 import 'package:savio/data/models/community_post_list.dart';
 import 'package:savio/presentation/screens/community_post_screen.dart';
 import 'package:savio/presentation/widgets/user_profile_pic.dart';
@@ -66,19 +68,14 @@ class CommunityPostCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(communityPostList.title,
-                      style: Theme.of(context) // 1
-                          .textTheme
-                          .headlineMedium!
-                          .copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                              color: Colors.white70)),
+                      style: titleStyle.copyWith(
+                          fontSize: 22, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 2),
                   Text(
                     communityPostList.content.length > 100
                         ? '${communityPostList.content.substring(0, 100)}...'
                         : communityPostList.content,
-                    style: Theme.of(context).textTheme.bodyLarge, //2
+                    style: readingStyle, //2
                   ),
                   const Divider(
                     thickness: 0.9,
@@ -91,10 +88,7 @@ class CommunityPostCard extends StatelessWidget {
                       url: communityPostList.author.profilePic,
                     ),
                     title: Text(communityPostList.author.name,
-                        style: Theme.of(context) //3
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(fontWeight: FontWeight.bold)),
+                        style: bodyStyle),
                     trailing: FittedBox(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
