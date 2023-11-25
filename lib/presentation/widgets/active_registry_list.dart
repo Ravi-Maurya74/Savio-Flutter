@@ -60,15 +60,23 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
       return activeRegistry.borrower;
     }
   }
+  Color amountColor(ActiveRegistry activeRegistry, User user) {
+  if (activeRegistry.borrower.id == user.id) {
+    return Colors.red;
+  } else {
+    return Colors.green;
+  }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    final otherUser = getOtherUser(widget.activeRegistry, widget.user);
-    void clear() {
+  void clear() {
       setState(() {
         _cleared = true;
       });
     }
+
+  @override
+  Widget build(BuildContext context) {
+    final otherUser = getOtherUser(widget.activeRegistry, widget.user);
 
     return Stack(
       children: [
@@ -137,7 +145,7 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
                     otherUser.name,
                     style: bodyStyle,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     widget.activeRegistry.create_date,
                     style: bodyStyle.copyWith(
@@ -157,7 +165,7 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.activeRegistry.description??"",
+                widget.activeRegistry.description ?? "",
                 style: bodyStyle.copyWith(
                     fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize),
               ),
@@ -167,9 +175,9 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
               Text(
                 '₹${widget.activeRegistry.amount}',
                 style: bodyStyle.copyWith(
-                    fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-                    color: amountColor(widget.activeRegistry, widget.user),
-                    ),
+                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+                  color: amountColor(widget.activeRegistry, widget.user),
+                ),
               )
             ],
           ),
@@ -186,7 +194,8 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
                 borderRadius: BorderRadius.only(
                   // bottomLeft: Radius.circular(10),
                   // topRight: Radius.circular(10),
-                  topLeft: Radius.circular(10),
+                  // topLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
                 ),
               ),
               child: Container(
@@ -206,18 +215,3 @@ class _ActiveRegistryListTileState extends State<ActiveRegistryListTile> {
   }
 }
 
-User getOtherUser(ActiveRegistry activeRegistry, User user) {
-  if (activeRegistry.borrower.id == user.id) {
-    return activeRegistry.lender;
-  } else {
-    return activeRegistry.borrower;
-  }
-}
-
-Color amountColor(ActiveRegistry activeRegistry, User user) {
-  if (activeRegistry.borrower.id == user.id) {
-    return Colors.red;
-  } else {
-    return Colors.green;
-  }
-}

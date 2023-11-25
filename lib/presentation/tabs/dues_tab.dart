@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:savio/constants/decorations.dart';
 import 'package:savio/presentation/widgets/active_registry_list.dart';
+import 'package:savio/presentation/widgets/initiate_pending_registry_list.dart';
 
 class Dues extends StatefulWidget {
   const Dues({super.key});
@@ -89,14 +90,9 @@ class MyListViewWithTabsState extends State<MyListViewWithTabs>
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [
-              const ActiveRegistryBuilder(),
-              ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return ListTile(title: Text('Item $index from Tab 2'));
-                },
-              ),
+            children: const [
+              ActiveRegistryBuilder(),
+              InitiatePendingRegistryBuilder(),
             ],
           ),
         ),

@@ -14,6 +14,7 @@ class InitiatePendingRegistry {
   final String status;
   final String accept_url;
   final String reject_url;
+  final String? description;
   InitiatePendingRegistry({
     required this.id,
     required this.lender,
@@ -26,6 +27,7 @@ class InitiatePendingRegistry {
     required this.status,
     required this.accept_url,
     required this.reject_url,
+    required this.description,
   });
 
   InitiatePendingRegistry copyWith({
@@ -40,6 +42,7 @@ class InitiatePendingRegistry {
     String? status,
     String? accept_url,
     String? reject_url,
+    String? description,
   }) {
     return InitiatePendingRegistry(
       id: id ?? this.id,
@@ -53,6 +56,7 @@ class InitiatePendingRegistry {
       status: status ?? this.status,
       accept_url: accept_url ?? this.accept_url,
       reject_url: reject_url ?? this.reject_url,
+      description: description ?? this.description,
     );
   }
 
@@ -69,6 +73,7 @@ class InitiatePendingRegistry {
       'status': status,
       'accept_url': accept_url,
       'reject_url': reject_url,
+      'description': description,
     };
   }
 
@@ -78,12 +83,14 @@ class InitiatePendingRegistry {
       lender: User.fromMap(map['lender'] as Map<String, dynamic>),
       borrower: User.fromMap(map['borrower'] as Map<String, dynamic>),
       initiated_by: User.fromMap(map['initiated_by'] as Map<String, dynamic>),
-      cleared_by: User.fromMap(map['cleared_by'] as Map<String, dynamic>),
+      cleared_by: map['cleared_by']!=null? User.fromMap(map['cleared_by'] as Map<String,dynamic>):null,
       amount: map['amount'] as String,
       create_date: map['create_date'] as String,
       clear_date:
           map['clear_date'] != null ? map['clear_date'] as String : null,
       status: map['status'] as String,
+      description:
+          map['description'] != null ? map['description'] as String : null,
       accept_url: map['accept_url'] as String,
       reject_url: map['reject_url'] as String,
     );
@@ -114,7 +121,8 @@ class InitiatePendingRegistry {
         other.clear_date == clear_date &&
         other.status == status &&
         other.accept_url == accept_url &&
-        other.reject_url == reject_url;
+        other.reject_url == reject_url &&
+        other.description == description;
   }
 
   @override
@@ -129,6 +137,7 @@ class InitiatePendingRegistry {
         clear_date.hashCode ^
         status.hashCode ^
         accept_url.hashCode ^
-        reject_url.hashCode;
+        reject_url.hashCode ^
+        description.hashCode;
   }
 }
