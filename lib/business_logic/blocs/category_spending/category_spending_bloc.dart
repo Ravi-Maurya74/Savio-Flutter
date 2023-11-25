@@ -28,6 +28,7 @@ class CategorySpendingBloc
   FutureOr<void> _onGetCategorySpending(
       GetCategorySpending event, Emitter<CategorySpendingState> emit) async {
     emit(CategorySpendingLoading());
+    // await Future.delayed(const Duration(seconds: 5));
     try {
       final response = await dio.get(
         TransactionApiConstants.categorySpending(year, month),

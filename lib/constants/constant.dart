@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseUrl =
-      "https://ccc3-2409-40e3-60-22c2-5928-9064-ef66-e7b9.ngrok-free.app/";
+      "https://8680-2401-4900-1c83-9ae4-e60f-627c-fab6-365e.ngrok-free.app/";
 }
 
 class UserApiConstants {
@@ -53,4 +53,10 @@ class CommunityPostApiConstants {
   }
 
   static const String commentCreate = "${comments}create/";
+}
+
+class LendingRegistryApiConstants{
+  static const String baseUrl = "${ApiConstants.baseUrl}lending_registry/";
+  static const String active = "${baseUrl}active/";
+  static const String initiateRequestPending = "${baseUrl}initiate_request_pending/";
 }

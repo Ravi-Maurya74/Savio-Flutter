@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/business_logic/blocs/prediction_graph/prediction_graph_bloc.dart';
 import 'package:savio/constants/decorations.dart';
@@ -72,7 +72,7 @@ class PredictionWidget extends StatelessWidget {
   }
 }
 
-class PredictionGraphWidget extends StatelessWidget {
+class PredictionGraphWidget extends StatefulWidget {
   const PredictionGraphWidget({
     Key? key,
     required this.predictionGraph,
@@ -82,114 +82,182 @@ class PredictionGraphWidget extends StatelessWidget {
   final double monthlyBudget;
 
   @override
+  State<PredictionGraphWidget> createState() => _PredictionGraphWidgetState();
+}
+
+class _PredictionGraphWidgetState extends State<PredictionGraphWidget> {
+  bool _showTrendline = false;
+  bool _showBudgetBand = false;
+  bool _showPredictedBand = false;
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 350,
-      child: SfCartesianChart(
-        title: ChartTitle(
-          text: 'Predicted Expenditure',
-          textStyle: titleStyle.copyWith(fontSize: 20),
-        ),
-        primaryXAxis: DateTimeAxis(
-          desiredIntervals: 5,
-          title: AxisTitle(
-            text: 'Days of the month',
-            textStyle: titleStyle.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
-          ),
-          labelStyle: titleStyle.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
-        ),
-        primaryYAxis: NumericAxis(
-          // minimum: 0,
-          // maximum: 10000,
-          // interval: 1000,
-          title: AxisTitle(
-            text: 'Expenditure',
-            textStyle: titleStyle.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
-          ),
-          labelStyle: titleStyle.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
-        ),
-        borderColor: Colors.white,
-        zoomPanBehavior: ZoomPanBehavior(
-          enablePinching: true,
-          enablePanning: true,
-          enableDoubleTapZooming: true,
-          enableSelectionZooming: true,
-          enableMouseWheelZooming: true,
-        ),
-        series: <ChartSeries>[
-          LineSeries<PredictionData, DateTime>(
-            dataSource: predictionGraph,
-            xValueMapper: (PredictionData predictionData, _) =>
-                DateTime.parse(predictionData.date),
-            yValueMapper: (PredictionData predictionData, _) =>
-                predictionData.expenditure.floor(),
-            name: 'Amount',
-            // Enable data label
-            dataLabelSettings:  DataLabelSettings(isVisible: true,
-            textStyle: titleStyle.copyWith(fontSize: 14,fontWeight: FontWeight.normal),
-            labelAlignment: ChartDataLabelAlignment.top,
-            connectorLineSettings: const ConnectorLineSettings(
-              type: ConnectorType.line,
-              color: Colors.white,
-              width: 2,
-              length: '100%'
+    return Column(
+      children: [
+        SizedBox(
+          height: 350,
+          child: SfCartesianChart(
+            trackballBehavior: TrackballBehavior(
+              enable: true,
+              lineType: TrackballLineType.vertical,
+              activationMode: ActivationMode.singleTap,
+              tooltipSettings: const InteractiveTooltip(
+                enable: true,
+                color: Colors.blue,
+                format: 'point.x : ₹point.y',
+              ),
             ),
-            // showZeroValue: false,
-            // labelPosition: ChartDataLabelPosition.outside
+            title: ChartTitle(
+              text: 'Predicted Expenditure',
+              textStyle: titleStyle.copyWith(fontSize: 20),
             ),
-            enableTooltip: true,
-            // markerSettings: const MarkerSettings(
-            //   isVisible: true,
+            primaryXAxis: DateTimeAxis(
+                desiredIntervals: 5,
+                title: AxisTitle(
+                  text: 'Days of the month',
+                  textStyle: titleStyle.copyWith(
+                      fontSize: 14, fontWeight: FontWeight.normal),
+                ),
+                labelStyle: titleStyle.copyWith(
+                    fontSize: 14, fontWeight: FontWeight.normal),
+                plotBands: <PlotBand>[
+                  PlotBand(
+                    isVisible: _showPredictedBand,
+                    start: DateTime.now(),
+                    // end: DateTime.now().add(Duration(hours: 2)),
+                    color: Colors.yellow,
+                    text: 'Predicted Expenditure',
+                    // verticalTextPadding: '-50%',
+                    // horizontalTextPadding: '10%',
+                    horizontalTextAlignment: TextAnchor.end,
+                    verticalTextAlignment: TextAnchor.end,
+                    opacity: 0.2,
+                    textStyle: titleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.normal),
+                    // shouldRenderAboveSeries: true,
+                  ),
+                ]),
+            primaryYAxis: NumericAxis(
+                // minimum: 0,
+                // maximum: 10000,
+                // interval: 1000,
+                title: AxisTitle(
+                  text: 'Expenditure',
+                  textStyle: titleStyle.copyWith(
+                      fontSize: 14, fontWeight: FontWeight.normal),
+                ),
+                labelStyle: titleStyle.copyWith(
+                    fontSize: 14, fontWeight: FontWeight.normal),
+                plotBands: <PlotBand>[
+                  PlotBand(
+                    isVisible: _showBudgetBand,
+                    // start: 0,
+                    end: widget.monthlyBudget,
+                    color: Colors.green,
+                    text: 'Budget',
+                    // verticalTextPadding: '-50%',
+                    // horizontalTextPadding: '20%',
+                    horizontalTextAlignment: TextAnchor.start,
+                    verticalTextAlignment: TextAnchor.start,
+                    opacity: 0.2,
+                    textStyle: titleStyle.copyWith(
+                        fontSize: 14, fontWeight: FontWeight.normal),
+                    // shouldRenderAboveSeries: true,
+                  ),
+                ]),
+            borderColor: Colors.white,
+
+            // zoomPanBehavior: ZoomPanBehavior(
+            //   enablePinching: true,
+            //   // enablePanning: true,
+            //   enableDoubleTapZooming: true,
+            //   // enableSelectionZooming: true,
+            //   enableMouseWheelZooming: true,
             // ),
-            trendlines: <Trendline>[
-              Trendline(
-                type: TrendlineType.polynomial,
-                color: Colors.red,
-                width: 3,
+            series: <ChartSeries>[
+              LineSeries<PredictionData, DateTime>(
+                dataSource: widget.predictionGraph,
+                xValueMapper: (PredictionData predictionData, _) =>
+                    DateTime.parse(predictionData.date),
+                yValueMapper: (PredictionData predictionData, _) =>
+                    predictionData.expenditure.floor(),
+                name: 'Amount',
+                // Enable data label
+                dataLabelSettings: DataLabelSettings(
+                  isVisible: true,
+                  textStyle: titleStyle.copyWith(
+                      fontSize: 14, fontWeight: FontWeight.normal),
+                  labelAlignment: ChartDataLabelAlignment.top,
+                  connectorLineSettings: const ConnectorLineSettings(
+                      type: ConnectorType.line,
+                      color: Colors.white,
+                      width: 2,
+                      length: '100%'),
+                  // showZeroValue: false,
+                  // labelPosition: ChartDataLabelPosition.outside
+                ),
                 enableTooltip: true,
-                dashArray: <double>[2, 3],
-                polynomialOrder: 3,
-                backwardForecast: 0,
-              )
+                // markerSettings: const MarkerSettings(
+                //   isVisible: true,
+                // ),
+                trendlines: <Trendline>[
+                  if (_showTrendline)
+                    Trendline(
+                      // isVisible: _showTrendline,
+                      type: TrendlineType.polynomial,
+                      color: Colors.red,
+                      width: 3,
+                      enableTooltip: true,
+                      dashArray: <double>[2, 3],
+                      polynomialOrder: 3,
+                      backwardForecast: 0,
+                    )
+                ],
+              ),
             ],
           ),
-          
-        ],
-        annotations: <CartesianChartAnnotation>[
-          CartesianChartAnnotation(
-            widget: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.green, width: 2),
-                ),
+        ),
+        Wrap(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CheckboxListTile(
+              title: Text(
+                'Show Trendlines',
+                style: titleStyle.copyWith(fontSize: 14),
               ),
-              child: const Text('Monthly Budget',
-                  style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold)),
+              value: _showTrendline,
+              onChanged: (bool? value) {
+                setState(() {
+                  _showTrendline = value!;
+                });
+              },
             ),
-            coordinateUnit: CoordinateUnit.point,
-            region: AnnotationRegion.chart,
-            x: DateTime.now().day,
-            y: monthlyBudget,
-          ),
-          CartesianChartAnnotation(
-            widget: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  left: BorderSide(color: Colors.red, width: 2),
-                ),
+            CheckboxListTile(
+              title: Text(
+                'Show Budget Band',
+                style: titleStyle.copyWith(fontSize: 14),
               ),
-              child: const Text('Today',
-                  style: TextStyle(
-                      color: Colors.red, fontWeight: FontWeight.bold)),
+              value: _showBudgetBand,
+              onChanged: (bool? value) {
+                setState(() {
+                  _showBudgetBand = value!;
+                });
+              },
             ),
-            coordinateUnit: CoordinateUnit.point,
-            region: AnnotationRegion.chart,
-            x: DateTime.now().day,
-            y: 0,
-          ),
-        ],
-      ),
+            CheckboxListTile(
+              title: Text(
+                'Show Predicted Expenditure Band',
+                style: titleStyle.copyWith(fontSize: 14),
+              ),
+              value: _showPredictedBand,
+              onChanged: (bool? value) {
+                setState(() {
+                  _showPredictedBand = value!;
+                });
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
