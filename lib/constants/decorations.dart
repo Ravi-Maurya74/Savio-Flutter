@@ -65,5 +65,13 @@ TextStyle bodyStyle = GoogleFonts.exo2(
   ),
 );
 
-TextStyle readingStyle =
-    GoogleFonts.alegreya(fontSize: 18);
+TextStyle readingStyle = GoogleFonts.alegreya(fontSize: 18);
+
+LinearGradient savioLinearGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      const Color(0xFF50559a).withOpacity(0.7),
+      const Color(0xFFd988a1).withOpacity(0.7),
+      //50559a
+    ]);

@@ -1,10 +1,11 @@
 class ApiConstants {
   static const String baseUrl =
-      "https://8680-2401-4900-1c83-9ae4-e60f-627c-fab6-365e.ngrok-free.app/";
+      "https://2284-2409-40e3-104d-7e4b-bf78-6ec-f334-6a76.ngrok-free.app/";
 }
 
 class UserApiConstants {
   static const String baseUrl = "${ApiConstants.baseUrl}user/";
+  static const String search = baseUrl;
   static const String create = "${baseUrl}create/";
   static const String me = "${baseUrl}me/";
   static const String login = "${baseUrl}token/";
@@ -55,8 +56,10 @@ class CommunityPostApiConstants {
   static const String commentCreate = "${comments}create/";
 }
 
-class LendingRegistryApiConstants{
+class LendingRegistryApiConstants {
   static const String baseUrl = "${ApiConstants.baseUrl}lending_registry/";
+  static const String create = "${baseUrl}create/";
   static const String active = "${baseUrl}active/";
-  static const String initiateRequestPending = "${baseUrl}initiate_request_pending/";
+  static const String initiateRequestPending =
+      "${baseUrl}initiate_request_pending/";
 }

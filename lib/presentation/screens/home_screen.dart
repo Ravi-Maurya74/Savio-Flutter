@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list_bloc.dart';
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
+import 'package:savio/business_logic/blocs/user/user_bloc.dart';
 import 'package:savio/constants/decorations.dart';
 import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/tabs/dues_tab.dart';
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const CommunityTab(),
             ),
             const InsightTab(),
-            const Dues(),
+            Dues(user: context.read<UserBloc>().state.user!),
             const UserProfileTab(),
           ],
         ),
