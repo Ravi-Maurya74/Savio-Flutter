@@ -6,6 +6,7 @@ import 'package:savio/constants/decorations.dart';
 import 'package:savio/data/models/user.dart';
 import 'package:savio/presentation/screens/add_lending_registry_screen.dart';
 import 'package:savio/presentation/widgets/active_registry_list.dart';
+import 'package:savio/presentation/widgets/clear_pending_registry_list.dart';
 import 'package:savio/presentation/widgets/initiate_pending_registry_list.dart';
 
 class Dues extends StatefulWidget {
@@ -121,7 +122,12 @@ class MyListViewWithTabsState extends State<MyListViewWithTabs>
             controller: _tabController,
             children: const [
               ActiveRegistryBuilder(),
-              InitiatePendingRegistryBuilder(),
+              CustomScrollView(
+                slivers: [
+                  InitiatePendingRegistryBuilder(),
+                  ClearPendingRegistryBuilder(),
+                ],
+              ),
             ],
           ),
         ),
