@@ -30,7 +30,7 @@ class AddLendingRegistryScreenState extends State<AddLendingRegistryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Lending Registry'),
+        title:  Text('Add Lending Registry',style: titleStyle,),
       ),
       body: BlocProvider(
         create: (context) => CreateLendingRegistryBloc(
@@ -71,28 +71,39 @@ class AddLendingRegistryScreenState extends State<AddLendingRegistryScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                DropdownButton<String>(
-                  value: role,
-                  items: ['Lender', 'Borrower'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  hint: const Text('Select Role'),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      role = newValue!;
-                    });
-                  },
+                Row(
+                  children: [
+                    Text('You are: ',style: bodyStyle,),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        value: role,
+                        items: ['Lender', 'Borrower'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        hint: const Text('Select Role'),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            role = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
                   onChanged: (value) => amount = value,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     labelText: 'Amount',
+                    labelStyle: bodyStyle,
                   ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -107,8 +118,9 @@ class AddLendingRegistryScreenState extends State<AddLendingRegistryScreen> {
                 ),
                 TextFormField(
                   onChanged: (value) => description = value,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     labelText: 'Description',
+                    labelStyle: bodyStyle,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

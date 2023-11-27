@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:savio/business_logic/blocs/category/category_cubit.dart';
 import 'package:savio/business_logic/blocs/single_transaction/single_transaction_cubit.dart';
 import 'package:savio/business_logic/blocs/transaction/transaction_bloc.dart';
+import 'package:savio/constants/decorations.dart';
 import 'package:savio/presentation/widgets/custom_appbar.dart';
 import 'package:savio/data/models/transaction.dart';
 
@@ -176,7 +177,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         if (!mounted) return;
                         Navigator.pop(context);
                       },
-                      child: const Text('Save Expenses'),
+                      child: Text('Save Expenses',style: titleStyle.copyWith(color: Colors.white,fontSize: 18),),
                     ),
                   ],
                 ),

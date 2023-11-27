@@ -23,10 +23,24 @@ class TransactionTileBuilder extends StatelessWidget {
               itemBuilder: (context, index) {
                 final transaction = state.transactions[index];
                 return ListTile(
-                  title: Text(transaction.title,style: bodyStyle,),
-                  subtitle: Text(transaction.category.name,style: bodyStyle.copyWith(fontSize: 14),),
-                  leading: Text(transaction.amount.toString()),
-                  trailing: Text(DateFormat("d MMM y").format(DateTime.parse(transaction.date))),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(transaction.title,style: bodyStyle,),
+                      Text(DateFormat("d MMM y").format(DateTime.parse(transaction.date)),style: titleStyle.copyWith(fontSize: 12),),
+                    ],
+                  ),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(transaction.category.name,style: bodyStyle.copyWith(fontSize: 14),),
+                      Text("₹ ${transaction.amount}",style: bodyStyle.copyWith(fontSize: 13),)
+                    ],
+                  ),
+                  // leading: Text(transaction.amount.toString()),
+                  // trailing: Text(DateFormat("d MMM y").format(DateTime.parse(transaction.date))),
                 );
               },
             );

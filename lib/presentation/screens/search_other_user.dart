@@ -11,7 +11,7 @@ class SelectOtherUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Other User'),
+        title:  Text('Select Other User',style: titleStyle,),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -20,8 +20,9 @@ class SelectOtherUser extends StatelessWidget {
             height: 30,
           ),
           TextField(
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Search',
+              labelStyle: bodyStyle
             ),
             onChanged: (value) {
               if (value.length > 2) {

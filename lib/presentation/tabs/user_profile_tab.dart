@@ -5,6 +5,7 @@ import 'package:savio/business_logic/blocs/CommunityPostList/community_post_list
 import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
 import 'package:savio/business_logic/blocs/user/user_bloc.dart';
 import 'package:savio/data/models/user.dart';
+import 'package:savio/presentation/screens/cleared_dues_screen.dart';
 import 'package:savio/presentation/screens/edit_profile_screen.dart';
 import 'package:savio/presentation/tabs/community_tab.dart';
 import 'package:savio/presentation/widgets/profile_stack_design.dart';
@@ -110,6 +111,21 @@ class _UserProfileTabState extends State<UserProfileTab> {
                   //         builder: ((context) => const SavingsScreen())));
                 },
               ),
+              const Divider(
+                thickness: 0.5,
+                indent: 20,
+                endIndent: 20,
+              ),
+              UserdetailTile(Icons.receipt_outlined, title: 'Dues History', titleDescription: 'View all your cleared dues', trailingIcon: Icons.chevron_right_outlined, onPress: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ClearedDuesScreen(
+                        user: context.read<UserBloc>().state.user!,
+                      ),
+                    ),
+                  );
+              }),
               const Divider(
                 thickness: 0.5,
                 indent: 20,

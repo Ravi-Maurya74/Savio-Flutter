@@ -49,23 +49,29 @@ class PredictionWidget extends StatelessWidget {
             height: 20,
           ),
           Text(
-            'Predicted expenditure for this month: \$${state.predictionModel.predicted_total_expenditure}',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            'Predicted expenditure: ₹ ${state.predictionModel.predicted_total_expenditure}',
+            style: bodyStyle.copyWith(fontSize: 14),
+                textAlign: TextAlign.justify,
           ),
           Text(
-            'Your budget for this month: \$${state.predictionModel.monthly_budget}',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            'Your budget: ₹ ${state.predictionModel.monthly_budget}',
+            style: bodyStyle.copyWith(fontSize: 14),
+                textAlign: TextAlign.justify,
+
           ),
+          const SizedBox(height: 10,),
+          state.predictionModel.monthly_budget - state.predictionModel.predicted_total_expenditure>=0?Text(
+            'You will be able to save: ₹ ${((state.predictionModel.monthly_budget - state.predictionModel.predicted_total_expenditure)).toStringAsFixed(2)} if you spend according to your current expenditure pattern.',
+            style: bodyStyle.copyWith(fontSize: 14),
+                textAlign: TextAlign.justify,
+
+          ):
           Text(
-            'You will be able to save: \$${((state.predictionModel.monthly_budget - state.predictionModel.predicted_total_expenditure)).toStringAsFixed(2)} if you spend according to your current expenditure pattern.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          )
+            'You will be over budget by: ₹ ${((state.predictionModel.predicted_total_expenditure-state.predictionModel.monthly_budget)).toStringAsFixed(2)} if you spend according to your current expenditure pattern.',
+            style: bodyStyle.copyWith(fontSize: 14),
+                textAlign: TextAlign.justify,
+
+          ),
         ],
       ),
     );

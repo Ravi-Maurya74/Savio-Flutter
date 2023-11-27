@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:savio/constants/decorations.dart';
 
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({
@@ -35,7 +36,7 @@ class CustomAppbar extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: titleStyle,
             ),
           ],
         ),

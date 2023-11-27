@@ -1,16 +1,20 @@
 import 'package:animations/animations.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savio/business_logic/blocs/auth/auth_cubit.dart';
+import 'package:savio/business_logic/blocs/balance/balance_bloc.dart';
 import 'package:savio/business_logic/blocs/user/user_bloc.dart';
 import 'package:savio/constants/decorations.dart';
 import 'package:savio/data/models/user.dart';
 import 'package:savio/presentation/screens/add_lending_registry_screen.dart';
+import 'package:savio/presentation/screens/cleared_dues_screen.dart';
 import 'package:savio/presentation/widgets/active_registry_list.dart';
 import 'package:savio/presentation/widgets/clear_pending_registry_list.dart';
 import 'package:savio/presentation/widgets/initiate_pending_registry_list.dart';
 
 class Dues extends StatefulWidget {
-  const Dues({super.key,required this.user});
+  const Dues({super.key, required this.user});
   final User user;
 
   @override
@@ -46,9 +50,7 @@ class _DuesState extends State<Dues> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              height: 200,
-            ),
+            const BalanceWidget(),
             Expanded(
               child: MyListViewWithTabs(
                 key: key,
@@ -83,6 +85,87 @@ class _DuesState extends State<Dues> {
   }
 }
 
+class BalanceWidget extends StatelessWidget {
+  const BalanceWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<BalanceBloc, BalanceState>(
+      builder: (context, state) {
+        if (state is BalanceLoaded) {
+          return Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total Lending',
+                      style: bodyStyle,
+                    ),
+                    Text(
+                      state.total_lent.toString(),
+                      style: bodyStyle,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                     Text(
+                      'Total Borrowing',
+                      style: bodyStyle,
+                    ),
+                    Text(
+                      state.total_owed.toString(),
+                      style: bodyStyle,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Net',
+                      style: bodyStyle,
+                    ),
+                    Text(
+                      state.net.toString(),
+                      style: bodyStyle,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const SizedBox(
+            height: 400,
+          );
+        }
+      },
+      bloc: BalanceBloc(
+        authToken: context.read<AuthCubit>().state.authToken!,
+        dio: Dio(),
+      ),
+    );
+  }
+}
+
 class MyListViewWithTabs extends StatefulWidget {
   const MyListViewWithTabs({super.key});
 
@@ -112,9 +195,9 @@ class MyListViewWithTabsState extends State<MyListViewWithTabs>
       children: [
         TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Active'),
-            Tab(text: 'Pending'),
+          tabs: [
+            Tab(child: Text('Active',style: titleStyle.copyWith(fontSize: 20),),),
+            Tab(child: Text('Pending',style: titleStyle.copyWith(fontSize: 20),),),
           ],
         ),
         Expanded(

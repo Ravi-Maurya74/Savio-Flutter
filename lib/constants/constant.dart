@@ -1,6 +1,6 @@
 class ApiConstants {
   static const String baseUrl =
-      "https://b7ce-2409-40e3-55-fa62-3ee7-3ef6-12c4-51f2.ngrok-free.app/";
+      "https://f6c9-2401-4900-1f3d-9d5d-1f1f-8b7a-1c61-293f.ngrok-free.app/";
 }
 
 class UserApiConstants {
@@ -63,4 +63,6 @@ class LendingRegistryApiConstants {
   static const String initiateRequestPending =
       "${baseUrl}initiate_request_pending/";
   static const String clearRequestPending = "${baseUrl}clear_request_pending/";
+  static const String cleared = "${baseUrl}cleared/";
+  static const String balance = "${baseUrl}balance/";
 }

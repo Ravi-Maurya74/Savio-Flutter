@@ -18,19 +18,23 @@ class InitiatePendingRegistryBuilder extends StatelessWidget {
     return BlocBuilder(
         builder: (context, state) {
           if (state is InitiatePendingRegistryLoaded) {
-            return ListView.builder(
-              itemCount: state.initiatePendingRegistries.length,
-              itemBuilder: (context, index) {
-                return InitiatePendingRegistryListTile(
-                  initiatePendingRegistry:
-                      state.initiatePendingRegistries[index],
-                  user: context.read<UserBloc>().state.user!,
-                );
-              },
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                 (context, index) {
+                  return InitiatePendingRegistryListTile(
+                    initiatePendingRegistry:
+                        state.initiatePendingRegistries[index],
+                    user: context.read<UserBloc>().state.user!,
+                  );
+                },
+                childCount: state.initiatePendingRegistries.length,
+              ),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const SliverToBoxAdapter(
+              child:  Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
         },
@@ -140,7 +144,7 @@ class _InitiatePendingRegistryListTileState
                         );
                       } else if (state is InitiateAcceptRejectInitial) {
                         return AlertDialog(
-                          title: const Text('Accept or Reject'),
+                          title: const Text('Accept New Due?'),
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -301,6 +305,38 @@ class _InitiatePendingRegistryListTileState
                   padding: EdgeInsets.all(8),
                   child: Text(
                     "Rejected",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if(!_accepted && !_rejected)
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Card(
+              margin: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              elevation: 5,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  // bottomLeft: Radius.circular(10),
+                  // topRight: Radius.circular(10),
+                  // topLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: Container(
+                // color: const Color(0xFFd988a1).withOpacity(0.7),
+                decoration: BoxDecoration(
+                  // border: Border.all(color: const Color(0xFF50559a)),
+                  color: const Color(0xFF50559a).withOpacity(0.7),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    "Accept Due",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
